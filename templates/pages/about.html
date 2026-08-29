@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About DICHO Ltd{% endblock %}
+{% block content %}
+<section class="about-hero">
+  <div class="container"><div class="row align-items-center g-4 g-xl-5">
+    <div class="col-lg-6"><div class="about-hero-content"><div class="section-kicker mb-2">About DICHO Ltd</div><nav class="breadcrumb mb-3"><a href="{% url 'home' %}">Home</a><span class="mx-2">›</span><span>About DICHO</span></nav><h1>The Company Behind ALVI Natural Products</h1><p>DICHO Ltd is the company behind ALVI natural products, offering quality solutions for beauty, hair care, home care, nutrition, and everyday wellness.</p></div></div>
+    <div class="col-lg-6"><div class="about-image-card about-hero-image"><img src="{% static 'about 1.png' %}" alt="DICHO and ALVI natural product collection"></div></div>
+  </div></div>
+</section>
+<section class="section-pad about-overview-section">
+  <div class="container"><div class="row align-items-center g-4 g-xl-5">
+    <div class="col-lg-6"><div class="about-overview-content"><div class="section-kicker">Who We Are</div><h2>Company Overview</h2><p>DICHO Ltd is a diversified manufacturing and trading company dedicated to delivering high-quality, natural, and value-added products for everyday life. Through its ALVI brand, the company provides products across beauty, personal care, hair care, home care, nutrition, and selected agricultural products.</p><p>Rooted in quality, innovation, sustainability, and customer well-being, DICHO Ltd combines traditional knowledge with modern production standards to serve households, professionals, retailers, wholesalers, salons, spas, hotels, restaurants, and distributors.</p><div class="row row-cols-2 g-3 about-overview-points"><div class="col"><div><i class="bi bi-box-seam"></i><span>ALVI Product Brand</span></div></div><div class="col"><div><i class="bi bi-leaf"></i><span>Natural Product Focus</span></div></div><div class="col"><div><i class="bi bi-shield-check"></i><span>Quality Assured</span></div></div><div class="col"><div><i class="bi bi-people"></i><span>Trusted by Customers</span></div></div></div></div></div>
+    <div class="col-lg-6"><div class="about-image-card about-overview-image"><img src="{% static 'about 2.png' %}" alt="DICHO and ALVI product range"></div></div>
+  </div></div>
+</section>
+<section class="section-pad bg-soft about-vm-section">
+  <div class="container"><div class="row g-4">
+    <div class="col-lg-6"><article class="about-vm-card h-100"><i class="bi bi-eye"></i><h2>Our Vision</h2><p>To become a trusted regional and international brand offering natural, effective, and affordable products that enhance beauty, health, hygiene, and nutrition.</p></article></div>
+    <div class="col-lg-6"><article class="about-vm-card h-100"><i class="bi bi-bullseye"></i><h2>Our Mission</h2><ul><li>Manufacture and distribute high-quality products using carefully selected raw materials.</li><li>Promote natural and plant-based solutions for personal care, food, and home hygiene.</li><li>Create sustainable value for customers, partners, farmers, and communities.</li></ul></article></div>
+  </div></div>
+</section>
+<section class="section-pad about-values-section">
+  <div class="container"><div class="text-center about-section-heading"><div class="section-kicker">Our Values</div><h2>Core Values</h2><p>The principles that guide DICHO Ltd and the ALVI product brand.</p></div><div class="row row-cols-1 row-cols-sm-2 row-cols-lg-5 g-4">
+    <div class="col"><article class="about-value-card h-100"><i class="bi bi-shield-check"></i><h6>Quality & Safety</h6><p>Strict quality control for safe, effective products.</p></article></div>
+    <div class="col"><article class="about-value-card h-100"><i class="bi bi-sun"></i><h6>Natural Sourcing</h6><p>Preference for plant-based and eco-responsible inputs.</p></article></div>
+    <div class="col"><article class="about-value-card h-100"><i class="bi bi-lightbulb"></i><h6>Innovation</h6><p>Continuous improvement of formulations and packaging.</p></article></div>
+    <div class="col"><article class="about-value-card h-100"><i class="bi bi-emoji-smile"></i><h6>Customer Satisfaction</h6><p>Reliable products designed for real needs.</p></article></div>
+    <div class="col"><article class="about-value-card h-100"><i class="bi bi-hand-thumbs-up"></i><h6>Integrity</h6><p>Ethical and transparent practices.</p></article></div>
+  </div></div>
+</section>
+<section class="section-pad bg-soft about-quality-section">
+  <div class="container"><div class="row align-items-center g-4 g-xl-5">
+    <div class="col-lg-5"><div class="about-image-card about-quality-image"><img src="{% static 'about 3.png' %}" alt="DICHO and ALVI quality product collection"></div></div>
+    <div class="col-lg-7"><div class="about-quality-content"><div class="section-kicker">Quality Assurance</div><h2>Products Handled with Care</h2><p>ALVI products are developed and handled with strict attention to hygiene and safety standards, consistent quality control, proper packaging, and clear labelling.</p><ul class="about-quality-list"><li><i class="bi bi-check2-circle"></i>Hygiene and safety standards</li><li><i class="bi bi-check2-circle"></i>Consistent quality control</li><li><i class="bi bi-check2-circle"></i>Proper packaging and clear labelling</li><li><i class="bi bi-check2-circle"></i>Customer-focused product handling</li></ul><a class="btn btn-green" href="{% url 'shop' %}">Shop ALVI Products <i class="bi bi-arrow-right ms-1"></i></a></div></div>
+  </div></div>
+</section>
+{% endblock %}

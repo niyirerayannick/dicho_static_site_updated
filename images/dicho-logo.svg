@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 110" role="img" aria-label="DICHO Ltd logo">
+<defs><linearGradient id="leaf" x1="0" x2="1"><stop offset="0" stop-color="#168a25"/><stop offset="1" stop-color="#0b5d1e"/></linearGradient></defs>
+<path d="M42 72 C17 42 34 14 83 18 C80 58 65 77 42 72Z" fill="url(#leaf)"/>
+<path d="M63 82 C86 43 118 42 143 70 C107 100 80 104 63 82Z" fill="#77bd43"/>
+<path d="M60 88 C64 64 77 43 103 28" fill="none" stroke="#0b5d1e" stroke-width="7" stroke-linecap="round"/>
+<text x="155" y="57" font-family="Arial, sans-serif" font-size="45" font-weight="800" fill="#003b1f">DICHO</text>
+<text x="309" y="57" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#168a25">Ltd</text>
+<text x="157" y="85" font-family="Arial, sans-serif" font-size="16" fill="#315c3e">Natural • Quality • Trusted</text>
+</svg>

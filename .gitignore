@@ -1,0 +1,14 @@
+# Local settings and development artifacts
+.env
+.venv/
+__pycache__/
+*.py[cod]
+
+# Local runtime data. Coolify persists these outside the Git checkout.
+db.sqlite3
+media/
+staticfiles/
+
+# initial_db.sqlite3 and initial_media/ are intentionally not ignored.
+# They are optional, first-deployment-only bootstrap data. Do not add them to
+# Git if their contents should remain private; upload them to the volumes instead.

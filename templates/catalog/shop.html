@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Shop ALVI Products | DICHO Ltd{% endblock %}
+{% block content %}
+<main class="shop-page">
+  <section class="shop-hero">
+    <div class="container"><div class="row align-items-center g-4 g-xl-5">
+      <div class="col-lg-6"><div class="shop-hero-content"><div class="section-kicker mb-2">ALVI Natural Products</div><h1>Shop ALVI Products</h1><nav class="breadcrumb mb-3"><a href="{% url 'home' %}">Home</a><span class="mx-2">›</span><span>Shop ALVI Products</span></nav><p>Explore ALVI products by DICHO Ltd, including cosmetics, hair care products, edible oils, home care products, nuts, dried products, and more.</p></div></div>
+      <div class="col-lg-6"><div class="shop-hero-image"><img src="{% static 'about 2.png' %}" alt="ALVI products by DICHO Ltd"></div></div>
+    </div></div>
+  </section>
+  {% include 'catalog/shop_product_list.html' %}
+  <section class="container mb-5 shop-trust-section"><div class="row g-3 g-md-4"><div class="col-6 col-md-3"><div class="small-feature shop-trust-card"><i class="bi bi-sun"></i><h6>Natural Care</h6><small>Carefully selected plant-based ingredients.</small></div></div><div class="col-6 col-md-3"><div class="small-feature shop-trust-card"><i class="bi bi-shield-check"></i><h6>Quality Assured</h6><small>Strict quality control and safety standards.</small></div></div><div class="col-6 col-md-3"><div class="small-feature shop-trust-card"><i class="bi bi-truck"></i><h6>Fast Delivery</h6><small>Reliable delivery across Rwanda.</small></div></div><div class="col-6 col-md-3"><div class="small-feature shop-trust-card"><i class="bi bi-lock"></i><h6>Secure Ordering</h6><small>Your information and orders are safe.</small></div></div></div></section>
+</main>
+{% endblock %}

@@ -1,0 +1,11 @@
+from django.contrib import messages
+from django.shortcuts import redirect, render
+from apps.core.models import FAQ
+from .forms import ContactForm
+def contact(request):
+    if request.method == "POST":
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save(); messages.success(request, "Thank you. Your message has been sent successfully."); return redirect("contact")
+    else: form = ContactForm()
+    return render(request, "pages/contact.html", {"form": form, "faqs": FAQ.objects.filter(is_active=True)[:3]})
