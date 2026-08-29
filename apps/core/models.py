@@ -4,14 +4,14 @@ from django.db import models
 class SiteSetting(models.Model):
     company_name = models.CharField(max_length=100, default="DICHO Ltd")
     tagline = models.CharField(max_length=150, default="Natural • Quality • Trusted")
-    phone = models.CharField(max_length=50, default="+250 788 123 456")
+    phone = models.CharField(max_length=50, default="+250 788 428 711")
     email = models.EmailField(default="info@dicho.rw")
-    whatsapp_number = models.CharField(max_length=30, default="250788123456")
+    whatsapp_number = models.CharField(max_length=30, default="+250 788 428 711")
     address = models.CharField(max_length=255, default="Kigali, Rwanda")
     working_hours = models.CharField(max_length=255, default="Mon - Sat: 8:00 AM - 6:00 PM")
     facebook_url = models.URLField(blank=True)
     instagram_url = models.URLField(blank=True)
-    whatsapp_url = models.URLField(blank=True)
+    whatsapp_url = models.URLField(blank=True, default="https://wa.me/250788428711")
     logo = models.ImageField(upload_to="site/", blank=True)
     favicon = models.ImageField(upload_to="site/", blank=True)
 

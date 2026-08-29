@@ -65,7 +65,9 @@ class Command(BaseCommand):
     help = "Create or update DICHO and ALVI product data without duplicating records."
 
     def handle(self, *args, **options):
-        site, _ = SiteSetting.objects.get_or_create(company_name="DICHO Ltd", defaults={"tagline": "Home of ALVI Natural Products", "phone": "+250 788 123 456", "email": "info@dicho.rw", "whatsapp_number": "250788123456", "address": "Kigali, Rwanda", "working_hours": "Mon - Sat: 8:00 AM - 6:00 PM"})
+        site, _ = SiteSetting.objects.get_or_create(company_name="DICHO Ltd", defaults={"tagline": "Home of ALVI Natural Products", "phone": "+250 788 428 711", "email": "info@dicho.rw", "whatsapp_number": "+250 788 428 711", "whatsapp_url": "https://wa.me/250788428711", "address": "Kigali, Rwanda", "working_hours": "Mon - Sat: 8:00 AM - 6:00 PM"})
+        SiteSetting.objects.filter(pk=site.pk).update(phone="+250 788 428 711", whatsapp_number="+250 788 428 711", whatsapp_url="https://wa.me/250788428711")
+        site.refresh_from_db(fields=["phone", "whatsapp_number", "whatsapp_url"])
         logo_available = ensure_media_file(self, "logo/dicho-logo.jpeg")
         if logo_available and (not site.logo or not site.logo.storage.exists(site.logo.name)):
             site.logo.name = "site/dicho-logo.jpeg"; site.save(update_fields=["logo"])

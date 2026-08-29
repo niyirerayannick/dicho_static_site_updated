@@ -49,11 +49,11 @@ class Migration(migrations.Migration):
                         default="Natural • Quality • Trusted", max_length=150
                     ),
                 ),
-                ("phone", models.CharField(default="+250 788 123 456", max_length=50)),
+                ("phone", models.CharField(default="+250 788 428 711", max_length=50)),
                 ("email", models.EmailField(default="info@dicho.rw", max_length=254)),
                 (
                     "whatsapp_number",
-                    models.CharField(default="250788123456", max_length=30),
+                    models.CharField(default="+250 788 428 711", max_length=30),
                 ),
                 ("address", models.CharField(default="Kigali, Rwanda", max_length=255)),
                 (
@@ -64,7 +64,7 @@ class Migration(migrations.Migration):
                 ),
                 ("facebook_url", models.URLField(blank=True)),
                 ("instagram_url", models.URLField(blank=True)),
-                ("whatsapp_url", models.URLField(blank=True)),
+                ("whatsapp_url", models.URLField(blank=True, default="https://wa.me/250788428711")),
                 ("logo", models.ImageField(blank=True, upload_to="site/")),
                 ("favicon", models.ImageField(blank=True, upload_to="site/")),
             ],
