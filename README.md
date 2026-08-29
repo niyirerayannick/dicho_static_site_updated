@@ -42,15 +42,18 @@ This deployment uses one application container and SQLite. Do not configure repl
    ```
 
 6. Deploy. On the first deployment only, `entrypoint.sh` copies `/app/initial_db.sqlite3` into `/app/data/db.sqlite3` when the persistent database does not already exist. It also copies `/app/initial_media` into an empty `/app/media` volume when that optional bootstrap directory exists.
-7. Create an administrator from the Coolify terminal:
+7. From the Coolify terminal, run the safe image/data seed command, then create an administrator:
 
    ```sh
+   python manage.py seed_dicho
    python manage.py createsuperuser
    ```
 
 8. Confirm the admin at `/admin/`.
 
 Future GitHub deployments update code, migrations, and static files. They do **not** overwrite `/app/data/db.sqlite3` or `/app/media`, because those paths are persistent Coolify storage mounts and the bootstrap copies run only when those destinations are empty.
+
+`python manage.py seed_dicho` copies the repository's required `images/products`, `images/categories`, and `images/logo` files into `MEDIA_ROOT` when they are missing or older. It stores only relative media paths in the database and does not duplicate products or categories.
 
 ### Initial data and media
 

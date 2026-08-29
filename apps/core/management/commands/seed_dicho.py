@@ -1,3 +1,7 @@
+from pathlib import Path
+from shutil import copy2
+
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
 
@@ -43,21 +47,38 @@ REAL_PRODUCTS = [
 LEGACY_SEED_SLUGS = ["dicho-aloe-vera-gel", "dicho-body-cream", "herbal-jelly", "glycerin", "hair-growth-oil", "hair-cream", "hair-jelly", "avocado-oil", "olive-oil-extra-virgin", "sunflower-oil", "lavender-essential-oil", "lemongrass-essential-oil", "eucalyptus-essential-oil", "hand-soap", "multipurpose-liquid-detergent", "dishwashing-liquid", "spice-mix-for-tea", "mixed-nuts", "dried-raisins", "fresh-avocado"]
 
 
+def ensure_media_file(command, relative_path):
+    """Copy a repository image into MEDIA_ROOT without overwriting newer media."""
+    source = Path(settings.BASE_DIR) / "images" / relative_path
+    destination = Path(settings.MEDIA_ROOT) / relative_path
+    if not source.is_file():
+        command.stdout.write(command.style.WARNING(f"Image source missing: {source}"))
+        return destination.is_file()
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    if not destination.exists() or source.stat().st_mtime_ns > destination.stat().st_mtime_ns:
+        copy2(source, destination)
+        command.stdout.write(f"Copied media image: {relative_path}")
+    return True
+
+
 class Command(BaseCommand):
     help = "Create or update DICHO and ALVI product data without duplicating records."
 
     def handle(self, *args, **options):
         site, _ = SiteSetting.objects.get_or_create(company_name="DICHO Ltd", defaults={"tagline": "Home of ALVI Natural Products", "phone": "+250 788 123 456", "email": "info@dicho.rw", "whatsapp_number": "250788123456", "address": "Kigali, Rwanda", "working_hours": "Mon - Sat: 8:00 AM - 6:00 PM"})
-        if not site.logo:
+        logo_available = ensure_media_file(self, "logo/dicho-logo.jpeg")
+        if logo_available and (not site.logo or not site.logo.storage.exists(site.logo.name)):
             site.logo.name = "site/dicho-logo.jpeg"; site.save(update_fields=["logo"])
         categories = {}
         for order, (name, description, asset_path, image, icon_class) in enumerate(CATEGORIES, 1):
             hero_title, hero_subtitle, hero_description = HERO_CONTENT.get(name, ("", "", ""))
-            category, _ = Category.objects.update_or_create(slug=slugify(name), defaults={"name": name, "description": description, "asset_path": asset_path, "image": image, "icon_class": icon_class, "is_active": True, "show_in_hero": name in HERO_CONTENT, "hero_title": hero_title, "hero_subtitle": hero_subtitle, "hero_description": hero_description, "display_order": order})
+            category_image = image if ensure_media_file(self, image) else ""
+            category, _ = Category.objects.update_or_create(slug=slugify(name), defaults={"name": name, "description": description, "asset_path": asset_path, "image": category_image, "icon_class": icon_class, "is_active": True, "show_in_hero": name in HERO_CONTENT, "hero_title": hero_title, "hero_subtitle": hero_subtitle, "hero_description": hero_description, "display_order": order})
             categories[name] = category
         Product.objects.filter(slug__in=LEGACY_SEED_SLUGS).update(is_active=False, is_featured=False, is_best_seller=False, is_new=False)
         for index, data in enumerate(REAL_PRODUCTS):
-            defaults = {"name": data["name"], "category": categories[data["category"]], "short_description": data["short_description"], "description": data["description"], "benefits": data["benefits"], "ingredients": data["ingredients"], "usage_instruction": data["usage"], "size": data["size"], "price": data["price"], "old_price": None, "image": data["image"], "asset_path": "", "is_active": True, "is_featured": True, "is_new": index < 7, "is_best_seller": index in (3, 6, 10), "is_on_sale": False}
+            product_image = data["image"] if ensure_media_file(self, data["image"]) else ""
+            defaults = {"name": data["name"], "category": categories[data["category"]], "short_description": data["short_description"], "description": data["description"], "benefits": data["benefits"], "ingredients": data["ingredients"], "usage_instruction": data["usage"], "size": data["size"], "price": data["price"], "old_price": None, "image": product_image, "asset_path": "", "is_active": True, "is_featured": True, "is_new": index < 7, "is_best_seller": index in (3, 6, 10), "is_on_sale": False}
             product, created = Product.objects.update_or_create(slug=slugify(data["name"]), defaults=defaults)
             if created:
                 product.stock_quantity = 50; product.save(update_fields=["stock_quantity"])
