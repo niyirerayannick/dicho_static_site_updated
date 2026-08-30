@@ -5,7 +5,13 @@
 .hero-carousel .hero-title{font-size:clamp(38px,4.25vw,64px);line-height:1.08;letter-spacing:-.75px}
 .hero-carousel .hero-description{max-width:680px;font-size:18px;line-height:1.7}
 .hero-carousel .hero-actions{gap:16px}
-.hero-carousel .hero-actions .btn{min-height:46px;padding:11px 20px}
+.hero-carousel .hero-actions .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 16px;border-radius:11px;font-size:.95rem;font-weight:700;letter-spacing:.01em;box-shadow:0 8px 18px rgba(0,59,31,.1);transition:transform .2s ease,box-shadow .2s ease,background-color .2s ease,border-color .2s ease}
+.hero-carousel .hero-actions .btn:first-child{min-width:178px}
+.hero-carousel .hero-actions .btn:last-child{min-width:164px;background:rgba(255,255,255,.72);border-width:2px}
+.hero-carousel .hero-actions .btn:hover{transform:translateY(-3px);box-shadow:0 14px 28px rgba(0,59,31,.18)}
+.hero-carousel .hero-actions .btn:focus-visible{outline:3px solid rgba(22,138,37,.3);outline-offset:3px}
+.hero-carousel .hero-actions .btn i{transition:transform .2s ease}
+.hero-carousel .hero-actions .btn:hover i{transform:translateX(3px)}
 .hero-carousel .carousel-control-prev,.hero-carousel .carousel-control-next{top:50%;width:44px;height:44px;opacity:1;background:rgba(255,255,255,.88);border-radius:50%;box-shadow:0 8px 20px rgba(0,0,0,.08)}
 .hero-carousel .carousel-control-prev{left:max(12px,calc((100% - 1440px)/2 + 8px))}
 .hero-carousel .carousel-control-next{right:max(12px,calc((100% - 1440px)/2 + 8px))}
