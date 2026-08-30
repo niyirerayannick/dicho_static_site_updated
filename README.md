@@ -87,3 +87,11 @@ docker run -p 8000:8000 `
 ```
 
 Open `http://127.0.0.1:8000/` after the container starts.
+
+## Client feedback TODO
+
+- Improve the label and packaging presentation for herbal, nuts, and spices products once the final label content and design direction are provided. No sample labels have been created.
+
+## Trainings and Press Room
+
+`python manage.py seed_dicho` also creates the initial ALVI training guides and DICHO Press Room articles. The command uses `update_or_create`, so it is safe to run again without duplicating posts. Manage articles, categories, publication status, featured status, related products, and images in the Django admin under Content.

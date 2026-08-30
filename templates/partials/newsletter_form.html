@@ -1,1 +1,8 @@
-<section class="container my-5"><div class="footer-newsletter"><div class="row align-items-center g-3"><div class="col-lg-6"><h3 class="mb-1">Stay Updated with DICHO Ltd</h3><p class="mb-0">Subscribe to receive updates about ALVI products, offers, and natural care tips.</p></div><div class="col-lg-6"><form action="{% url 'newsletter_subscribe' %}" method="post" class="d-flex gap-2">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><input class="form-control" name="email" type="email" required placeholder="Enter your email address"><button class="btn btn-light text-green fw-bold" type="submit">Subscribe</button></form><small><i class="bi bi-lock me-1"></i>No spam, unsubscribe anytime.</small></div></div></div></section>
+<section class="container newsletter-section">
+  <div class="footer-newsletter newsletter-card">
+    <div class="newsletter-compact-content">
+      <div class="newsletter-copy"><div><h3>Stay updated with ALVI</h3><p>Get product news, offers, and natural care tips.</p></div></div>
+      <div class="newsletter-subscribe-wrap"><form action="{% url 'newsletter_subscribe' %}" method="post" class="newsletter-form">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><label class="visually-hidden" for="newsletter-email">Email address</label><div class="newsletter-input-wrap"><i class="bi bi-envelope"></i><input id="newsletter-email" class="form-control" name="email" type="email" required autocomplete="email" placeholder="Enter your email"></div><button class="btn newsletter-submit-btn" type="submit">Subscribe</button></form><p class="newsletter-note">No spam. Unsubscribe anytime.</p></div>
+    </div>
+  </div>
+</section>

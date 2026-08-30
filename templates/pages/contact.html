@@ -1,8 +1,38 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block title %}Contact DICHO Ltd | ALVI Product Orders{% endblock %}
 {% block content %}
-<section class="page-hero"><div class="container"><div class="row align-items-center g-4"><div class="col-lg-6"><h1>Contact DICHO Ltd</h1><nav class="breadcrumb"><a href="{% url 'home' %}">Home</a><span class="mx-2">›</span><span>Contact DICHO Ltd</span></nav><p>Contact DICHO Ltd for ALVI product orders, wholesale inquiries, partnerships, delivery support, or general information.</p></div><div class="col-lg-6"><img src="{% static 'hero-natural-products.svg' %}" alt="Contact DICHO Ltd about ALVI products"></div></div></div></section>
-<section class="section-pad"><div class="container"><div class="row g-4"><div class="col-lg-7"><div class="contact-card"><h3><i class="bi bi-envelope-paper text-green me-2"></i>Send Us a Message</h3><form method="post" class="row g-3 mt-2">{% csrf_token %}{% for field in form %}<div class="{% if field.name == 'message' %}col-12{% else %}col-md-6{% endif %}"><label class="form-label">{{ field.label }}{% if field.field.required %} *{% endif %}</label>{{ field }}{% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>{% endfor %}<div class="col-12"><button type="submit" class="btn btn-green"><i class="bi bi-send me-1"></i>Send Message</button><p class="small text-muted mt-3 mb-0"><i class="bi bi-lock me-1"></i>Your information is safe with us.</p></div></form></div></div><div class="col-lg-5"><div class="contact-card mb-4"><h3>Contact Information</h3><div class="d-flex gap-3 py-3 border-bottom"><i class="bi bi-telephone fs-3 text-green"></i><div><strong>Phone</strong><p class="mb-0">{{ site_setting.phone|default:'+250 788 428 711' }}</p></div></div><div class="d-flex gap-3 py-3 border-bottom"><i class="bi bi-envelope fs-3 text-green"></i><div><strong>Email</strong><p class="mb-0">{{ site_setting.email|default:'info@dicho.rw' }}</p></div></div><div class="d-flex gap-3 py-3 border-bottom"><i class="bi bi-geo-alt fs-3 text-green"></i><div><strong>Address</strong><p class="mb-0">{{ site_setting.address|default:'Kigali, Rwanda' }}</p></div></div><div class="d-flex gap-3 py-3"><i class="bi bi-clock fs-3 text-green"></i><div><strong>Business Hours</strong><p class="mb-0">{{ site_setting.working_hours|default:'Mon - Sat: 8:00 AM - 6:00 PM' }}</p></div></div></div><div class="contact-card bg-soft"><div class="d-flex gap-3 align-items-center"><i class="bi bi-whatsapp fs-1 text-green"></i><div><h5>Chat with us on WhatsApp</h5><p class="small text-muted">Get quick answers about ALVI products and orders.</p><a class="btn btn-green" href="{{ site_setting.whatsapp_url|default:'https://wa.me/250788428711' }}">Chat on WhatsApp</a></div></div></div></div></div><div class="row g-4 mt-3"><div class="col-lg-8"><div class="map-placeholder"><div class="text-center"><i class="bi bi-geo-alt-fill fs-1"></i><h4>{{ site_setting.address|default:'Kigali, Rwanda' }}</h4><p>Map placeholder for Google Maps integration</p></div></div></div><div class="col-lg-4"><div class="contact-card h-100"><h4>Why Contact DICHO?</h4><p>ALVI product orders, customer support, wholesale inquiries, and partnership opportunities.</p><a class="btn btn-outline-green" href="{% url 'shop' %}">Shop ALVI Products</a></div></div></div></div></section>
-<section class="container mb-5"><div class="contact-card"><div class="row align-items-center"><div class="col-lg-4"><h3>Frequently Asked Questions</h3></div><div class="col-lg-8">{% for faq in faqs %}<div class="faq-item {% if forloop.last %}border-0{% endif %}"><strong>{{ faq.question }}</strong><p class="mb-0 text-muted">{{ faq.answer }}</p></div>{% empty %}<p class="mb-0">Use the shop page or WhatsApp button for help with your order.</p>{% endfor %}</div></div></div></section>
+<section class="contact-hero">
+  <div class="container"><div class="contact-hero-content">
+    <h1>Contact DICHO Ltd</h1>
+    <p>Get in touch with DICHO Ltd for ALVI product orders, wholesale inquiries, delivery support, or general information.</p>
+  </div></div>
+</section>
+
+<section class="contact-info-floating-section">
+  <div class="container"><div class="contact-info-floating-card">
+    <div class="contact-info-item"><i class="bi bi-envelope"></i><div><h2>Email</h2><a href="mailto:{{ site_setting.email|default:'info@dicho.rw' }}">{{ site_setting.email|default:'info@dicho.rw' }}</a></div></div>
+    <div class="contact-info-item"><i class="bi bi-telephone"></i><div><h2>Telephone</h2><a href="tel:+250788428711">0788428711 / 0783285278</a></div></div>
+    <div class="contact-info-item"><i class="bi bi-geo-alt"></i><div><h2>Location</h2><p>Huye, Rwanda</p></div></div>
+  </div></div>
+</section>
+
+<section class="contact-form-section">
+  <div class="container"><div class="contact-form-card">
+    <div class="contact-section-heading text-center"><h2>Send Us a Message</h2><p>Have a question about ALVI products or DICHO Ltd services? Send your message and our team will get back to you.</p></div>
+    <form method="post" class="row g-3 contact-form" novalidate>
+      {% csrf_token %}{% if form.non_field_errors %}<div class="col-12">{{ form.non_field_errors }}</div>{% endif %}
+      {% for field in form %}{% if field.name != 'phone' %}<div class="{% if field.name == 'message' or field.name == 'subject' %}col-12{% else %}col-md-6{% endif %}"><label class="form-label" for="{{ field.id_for_label }}">{% if field.name == 'full_name' %}Your name{% elif field.name == 'email' %}Email address{% elif field.name == 'message' %}Your message{% else %}{{ field.label }}{% endif %}{% if field.field.required %} <span class="text-danger">*</span>{% endif %}</label>{{ field }}{% for error in field.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}</div>{% endif %}{% endfor %}
+      <div class="col-12"><button type="submit" class="btn contact-submit-btn">Send message <i class="bi bi-arrow-right ms-1"></i></button></div>
+    </form>
+  </div></div>
+</section>
+
+<section class="contact-faq-section">
+  <div class="container"><div class="contact-faq-card">
+    <div class="contact-section-heading text-center"><h2>Frequently Asked Questions</h2><p>Quick answers about ALVI products, orders, and delivery support.</p></div>
+    <div class="accordion contact-faq-accordion" id="contactFaq">
+      {% for faq in faqs %}<div class="accordion-item"><h3 class="accordion-header" id="faqHeading{{ forloop.counter }}"><button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#faqAnswer{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="faqAnswer{{ forloop.counter }}">{{ faq.question }}</button></h3><div id="faqAnswer{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="faqHeading{{ forloop.counter }}" data-bs-parent="#contactFaq"><div class="accordion-body">{{ faq.answer }}</div></div></div>{% empty %}<p class="mb-0 text-center">Contact DICHO Ltd for help with ALVI products, orders, and delivery.</p>{% endfor %}
+    </div>
+  </div></div>
+</section>
 {% endblock %}

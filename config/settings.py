@@ -15,7 +15,7 @@ INSTALLED_APPS = [
     "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",
     "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles",
     "apps.core.apps.CoreConfig", "apps.catalog.apps.CatalogConfig", "apps.cart.apps.CartConfig",
-    "apps.orders.apps.OrdersConfig", "apps.contact.apps.ContactConfig", "apps.newsletter.apps.NewsletterConfig",
+    "apps.orders.apps.OrdersConfig", "apps.contact.apps.ContactConfig", "apps.newsletter.apps.NewsletterConfig", "apps.content.apps.ContentConfig",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware", "whitenoise.middleware.WhiteNoiseMiddleware", "django.contrib.sessions.middleware.SessionMiddleware",

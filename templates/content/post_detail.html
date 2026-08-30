@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ post.meta_title|default:post.title }} | DICHO Ltd{% endblock %}
+{% block content %}
+<section class="page-hero content-hero content-detail-hero"><div class="container"><a class="content-back-link" href="{% url 'press_room' %}"><i class="bi bi-arrow-left"></i> Press Room</a><div class="section-kicker">{{ post.get_post_type_display }}</div><h1>{{ post.title }}</h1><p>Published {{ post.published_at|date:'F j, Y' }} by {{ post.author_name }}</p></div></section>
+<section class="content-section"><div class="container"><article class="content-detail"><img class="content-detail-image" src="{% if post.featured_image %}{{ post.featured_image.url }}{% else %}{% static 'products/fresh-avocado.svg' %}{% endif %}" alt="{{ post.title }}"><div class="content-detail-copy">{{ post.content|linebreaks }}{% if post.related_product %}<div class="related-product-panel"><span>Related ALVI product</span><h2>{{ post.related_product.name }}</h2><a class="btn btn-green" href="{{ post.related_product.get_absolute_url }}">Shop related product</a></div>{% endif %}<div class="d-flex gap-3 flex-wrap"><a href="{% url 'shop' %}" class="btn btn-green">Shop ALVI Products</a><a href="{% url 'contact' %}" class="btn btn-outline-green">Contact DICHO Ltd</a></div></div></article></div></section>
+{% endblock %}

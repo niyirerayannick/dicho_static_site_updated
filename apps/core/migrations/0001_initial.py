@@ -49,13 +49,13 @@ class Migration(migrations.Migration):
                         default="Natural • Quality • Trusted", max_length=150
                     ),
                 ),
-                ("phone", models.CharField(default="+250 788 428 711", max_length=50)),
+                ("phone", models.CharField(default="0788428711 / 0783285278", max_length=50)),
                 ("email", models.EmailField(default="info@dicho.rw", max_length=254)),
                 (
                     "whatsapp_number",
-                    models.CharField(default="+250 788 428 711", max_length=30),
+                    models.CharField(default="0788428711", max_length=30),
                 ),
-                ("address", models.CharField(default="Kigali, Rwanda", max_length=255)),
+                ("address", models.CharField(default="Huye, Rwanda", max_length=255)),
                 (
                     "working_hours",
                     models.CharField(
