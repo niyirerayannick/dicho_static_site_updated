@@ -1,2 +1,23 @@
-{% load static %}<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{% block title %}DICHO Ltd | Home of ALVI Natural Products{% endblock %}</title><meta name="description" content="DICHO Ltd is the company behind ALVI natural products, offering cosmetics, hair care products, edible oils, detergents, nuts, dried products, and selected agricultural products."><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"><link href="{% static 'dicho.css' %}" rel="stylesheet"><link href="{% static 'responsive.css' %}" rel="stylesheet"></head><body>{% include 'partials/header.html' %}{% include 'partials/messages.html' %}{% block content %}{% endblock %}{% include 'partials/footer.html' %}<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}DICHO Ltd | Home of ALVI Natural Products{% endblock %}</title>
+  <meta name="description" content="DICHO Ltd is the company behind ALVI natural products, offering cosmetics, hair care products, edible oils, detergents, nuts, dried products, and selected agricultural products.">
+  <link rel="icon" type="image/jpeg" href="{% if site_setting.favicon %}{{ site_setting.favicon.url }}{% else %}{% static 'logo/dicho-logo.jpeg' %}{% endif %}">
+  <link rel="apple-touch-icon" href="{% if site_setting.favicon %}{{ site_setting.favicon.url }}{% else %}{% static 'logo/dicho-logo.jpeg' %}{% endif %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link href="{% static 'dicho.css' %}" rel="stylesheet">
+  <link href="{% static 'responsive.css' %}" rel="stylesheet">
+</head>
+<body>
+  {% include 'partials/header.html' %}
+  {% include 'partials/messages.html' %}
+  {% block content %}{% endblock %}
+  {% include 'partials/footer.html' %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
