@@ -3,6 +3,7 @@ from shutil import copy2
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.db.models import Q
 from django.utils.text import slugify
 from django.utils import timezone
 
@@ -14,7 +15,7 @@ from apps.core.models import FAQ, SiteSetting, Testimonial
 CATEGORIES = [
     ("Cosmetics & Personal Care", "Natural skincare, body care and personal hygiene essentials.", "categories/cosmetics.svg", "categories/cosmetics-personal-care.png", "bi bi-bag-heart"),
     ("Hair Care Products", "Shampoos, creams, oils and treatments for healthy strong hair.", "categories/hair.svg", "categories/hair-care-products.png", "bi bi-scissors"),
-    ("Cooking & Edible Oils", "Pure, healthy oils for cooking, dressing and everyday meals.", "categories/edible-oils.svg", "categories/cooking-edible-oils.png", "bi bi-droplet"),
+    ("Cooking & Edible Oils", "ALVI avocado oil for everyday cooking and nutrition.", "categories/edible-oils.svg", "categories/cooking-edible-oils.png", "bi bi-droplet"),
     ("Liquid Detergents & Home Care", "Effective cleaning products for home and commercial use.", "categories/detergents.svg", "categories/liquid-detergents-home-care.png", "bi bi-house-heart"),
     ("Aromatherapy & Essential Oils", "Pure essential oils for relaxation, wellness and formulations.", "categories/essential-oils.svg", "categories/aromatherapy-essential-oils.png", "bi bi-flower1"),
     ("Spices for Tea & Food", "Natural spices and herbs to enrich taste and aroma.", "categories/spices.svg", "categories/spices-tea-food.png", "bi bi-cup-hot"),
@@ -25,7 +26,7 @@ CATEGORIES = [
 HERO_CONTENT = {
     "Cosmetics & Personal Care": ("Natural Products", "Natural care for healthy, glowing skin", "Discover body lotions, aloe vera gel, herbal jelly, skin oils, and personal care products made for everyday use."),
     "Hair Care Products": ("Natural Products", "Nourish and protect your hair naturally", "Explore hair oils, creams, and jelly products designed to support healthy-looking hair and scalp care."),
-    "Cooking & Edible Oils": ("Quality You Can Trust", "Pure oils for everyday cooking and nutrition", "Choose quality avocado oil, olive oil, sunflower oil, and other natural edible oils for your kitchen."),
+    "Cooking & Edible Oils": ("Quality You Can Trust", "Pure ALVI avocado oil for everyday cooking and nutrition", "Choose ALVI avocado oil for cooking, roasting, frying, baking, drizzling, and dipping."),
     "Liquid Detergents & Home Care": ("Quality You Can Trust", "Clean, fresh, and trusted home care", "Find multipurpose liquid detergents and home care products suitable for households and commercial use."),
 }
 
@@ -46,7 +47,7 @@ REAL_PRODUCTS = [
     {"name": "DICHO Hibiscus Dried Flower", "category": "Nuts & Dried Products", "size": "125 g", "price": 3000, "image": "products/dicho-hibiscus-dried-flower.jpeg", "short_description": "Packaged dried hibiscus flower.", "description": "DICHO packaged dried hibiscus flower.", "benefits": "Packaged dried hibiscus flower.", "ingredients": "See product label for details.", "usage": "Use according to the product label."},
 ]
 
-LEGACY_SEED_SLUGS = ["dicho-aloe-vera-gel", "dicho-body-cream", "herbal-jelly", "glycerin", "hair-growth-oil", "hair-cream", "hair-jelly", "avocado-oil", "olive-oil-extra-virgin", "sunflower-oil", "lavender-essential-oil", "lemongrass-essential-oil", "eucalyptus-essential-oil", "hand-soap", "multipurpose-liquid-detergent", "dishwashing-liquid", "spice-mix-for-tea", "mixed-nuts", "dried-raisins", "fresh-avocado"]
+LEGACY_SEED_SLUGS = ["dicho-aloe-vera-gel", "dicho-body-cream", "herbal-jelly", "glycerin", "hair-growth-oil", "hair-cream", "hair-jelly", "avocado-oil", "lavender-essential-oil", "lemongrass-essential-oil", "eucalyptus-essential-oil", "hand-soap", "multipurpose-liquid-detergent", "dishwashing-liquid", "spice-mix-for-tea", "mixed-nuts", "dried-raisins", "fresh-avocado"]
 
 CONTENT_CATEGORIES = [
     ("Beauty & Personal Care", "Customer guidance for everyday beauty and personal care products."),
@@ -66,7 +67,7 @@ CONTENT_POSTS = [
     ("training", "Home Care", "How to Use ALVI Multipurpose Liquid Detergent", "A simple home-care guide for using ALVI Multipurpose Liquid Detergent.", "Use the correct quantity for the cleaning task and follow the label safety instructions. Keep the product away from children and store it properly after use.", "alvi-multipurpose-liquid-detergent-1l", "products/alvi-multipurpose-liquid-detergent-1l.jpeg", False),
     ("blog", "Product Education", "Why Natural Ingredients Matter in Everyday Care", "DICHO Ltd shares why natural ingredients are important in ALVI product development.", "Everyday care starts with understanding customer needs and handling products with care. DICHO Ltd draws inspiration from plant-based ingredients while focusing on quality handling and safe everyday product use. Customers should always select products that fit their needs and follow the product label.", None, "products/alvi-body-lotion.jpeg", True),
     ("blog", "Product Education", "From Natural Sources to ALVI Products", "A look at avocado, aloe vera, calendula, and other natural inspirations behind ALVI products.", "Avocado, aloe vera, and calendula are natural inspirations behind selected ALVI products. DICHO Ltd values natural sourcing and quality handling as ingredients move toward finished products for everyday care. This does not imply ownership of farms or plantations.", None, "products/fresh-avocado.svg", False),
-    ("blog", "Product Education", "Choosing the Right ALVI Product for Your Daily Routine", "A simple guide to help customers choose ALVI products by need.", "Consider your everyday need when selecting ALVI products: beauty care, hair care, home care, edible oils, nuts, or dried products. Review the product label and description, then contact DICHO Ltd if you need additional customer guidance.", None, "products/alvi-aloe-vera-hydrating-gel.jpeg", False),
+    ("blog", "Product Education", "Choosing the Right ALVI Product for Your Daily Routine", "A simple guide to help customers choose ALVI products by need.", "Consider your everyday need when selecting ALVI products: beauty care, hair care, home care, ALVI avocado oil, nuts, or dried products. Review the product label and description, then contact DICHO Ltd if you need additional customer guidance.", None, "products/alvi-aloe-vera-hydrating-gel.jpeg", False),
     ("news", "Company News", "DICHO Ltd Introduces ALVI Natural Products Online", "DICHO Ltd is making ALVI products easier to discover and order through its online platform.", "The DICHO Ltd website brings ALVI product categories, customer ordering, and WhatsApp support together in one place. Customers can explore products, add items to the cart, and contact the team for guidance.", None, "products/alvi-extra-virgin-avocado-oil.jpeg", True),
     ("news", "Company News", "DICHO Ltd Expands Product Visibility Through Digital Platform", "The new website supports product visibility, customer communication, and online ordering.", "The digital platform helps customers discover ALVI products, communicate with DICHO Ltd, and place orders online. It supports product visibility and convenient customer access as the business grows.", None, "products/alvi-multipurpose-liquid-detergent-1l.jpeg", False),
 ]
@@ -117,6 +118,7 @@ class Command(BaseCommand):
             category, _ = Category.objects.update_or_create(slug=slugify(name), defaults={"name": name, "description": description, "asset_path": asset_path, "image": category_image, "icon_class": icon_class, "is_active": True, "show_in_hero": name in HERO_CONTENT, "hero_title": hero_title, "hero_subtitle": hero_subtitle, "hero_description": hero_description, "display_order": order})
             categories[name] = category
         Product.objects.filter(slug__in=LEGACY_SEED_SLUGS).update(is_active=False, is_featured=False, is_best_seller=False, is_new=False)
+        Product.objects.filter(Q(name__icontains="olive") | Q(name__icontains="sunflower")).update(is_active=False, is_featured=False, is_best_seller=False, is_new=False)
         for index, data in enumerate(REAL_PRODUCTS):
             product_image = data["image"] if ensure_media_file(self, data["image"]) else ""
             defaults = {"name": data["name"], "category": categories[data["category"]], "short_description": data["short_description"], "description": data["description"], "benefits": data["benefits"], "ingredients": data["ingredients"], "usage_instruction": data["usage"], "size": data["size"], "price": data["price"], "old_price": None, "image": product_image, "asset_path": "", "is_active": True, "is_featured": True, "is_new": index < 7, "is_best_seller": index in (3, 6, 10), "is_on_sale": False}
