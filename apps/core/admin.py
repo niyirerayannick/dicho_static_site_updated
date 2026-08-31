@@ -1,6 +1,10 @@
 from django.contrib import admin
 from .models import FAQ, SiteSetting, Testimonial
 
+admin.site.site_header = "DICHO Admin"
+admin.site.site_title = "DICHO Admin Portal"
+admin.site.index_title = "Dashboard"
+
 
 @admin.register(SiteSetting)
 class SiteSettingAdmin(admin.ModelAdmin):

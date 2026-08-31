@@ -1,0 +1,45 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_dashboard %}
+
+{% block extrahead %}{{ block.super }}<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>{% endblock %}
+{% block content %}
+{% admin_dashboard_data as dashboard %}
+<div class="dicho-dashboard">
+  <header class="dashboard-welcome dicho-hero"><div><div class="hero-meta"><p class="dashboard-eyebrow">DICHO LTD · ALVI</p><span class="system-pill"><i class="bi bi-broadcast"></i> Live System</span></div><h1>DICHO Admin Dashboard</h1><p>Manage ALVI products, orders, customers, messages, and website content.</p></div><div class="hero-actions"><a class="dashboard-website-link" href="{% url 'admin:orders_order_changelist' %}"><i class="bi bi-receipt"></i> View Orders</a><a class="dashboard-website-link" href="{% url 'home' %}" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> View Website</a></div></header>
+
+  <section class="dashboard-kpis" aria-label="Business overview">
+    {% for kpi in dashboard.kpis %}<a class="kpi-card dicho-kpi-card" href="{{ kpi.url }}"><span class="kpi-icon dicho-kpi-icon"><i class="bi {{ kpi.icon }}" aria-hidden="true"></i></span><span><span class="kpi-label">{{ kpi.label }}</span><strong>{% if kpi.prefix %}{{ kpi.prefix }}{% endif %}{{ kpi.value }}</strong><small>{{ kpi.helper }}</small></span></a>{% endfor %}
+  </section>
+
+  <section class="dashboard-actions dicho-quick-actions" aria-label="Quick actions">{% for action in dashboard.quick_actions %}<a href="{{ action.url }}"{% if action.label == 'View Website' %} target="_blank" rel="noopener"{% endif %}><i class="bi {{ action.icon }}" aria-hidden="true"></i><span><strong>{{ action.label }}</strong><small>{{ action.helper }}</small></span><i class="bi bi-arrow-up-right action-arrow" aria-hidden="true"></i></a>{% endfor %}</section>
+
+  {% if dashboard.alerts %}<section class="dashboard-alerts" aria-label="Admin notifications">{% for alert in dashboard.alerts %}<div class="dashboard-alert {{ alert.kind }}"><i class="bi {% if alert.kind == 'info' %}bi-info-circle{% elif alert.kind == 'warning' %}bi-exclamation-circle{% else %}bi-info-circle{% endif %}"></i><span>{{ alert.message }}</span></div>{% endfor %}</section>{% endif %}
+
+  <section class="dashboard-charts">
+    <article class="dashboard-panel dicho-chart-card"><div class="panel-heading"><h2>Orders Overview</h2><span>Last 7 days</span></div>{% if dashboard.has_orders %}<div class="chart-wrap"><canvas id="ordersWeekChart"></canvas></div>{% else %}<p class="dashboard-empty">No data available yet.</p>{% endif %}</article>
+    <article class="dashboard-panel dicho-chart-card"><div class="panel-heading"><h2>Orders by Status</h2><span>Live breakdown</span></div>{% if dashboard.has_orders %}<div class="chart-wrap"><canvas id="ordersStatusChart"></canvas></div>{% else %}<p class="dashboard-empty">No data available yet.</p>{% endif %}</article>
+    <article class="dashboard-panel dashboard-panel-wide dicho-chart-card"><div class="panel-heading"><h2>Products by Category</h2><span>Catalogue overview</span></div>{% if dashboard.has_category_data %}<div class="chart-wrap"><canvas id="productsCategoryChart"></canvas></div>{% else %}<p class="dashboard-empty">No data available yet.</p>{% endif %}</article>
+  </section>
+
+  <section class="dashboard-data-grid">
+    <article class="dashboard-panel dicho-table-card"><div class="panel-heading"><h2>Recent Orders</h2><a href="{% url 'admin:orders_order_changelist' %}">View all</a></div>{% if dashboard.recent_orders %}<div class="dashboard-table-wrap"><table><thead><tr><th>Order</th><th>Customer</th><th>Phone</th><th>Total</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody>{% for order in dashboard.recent_orders %}<tr><td><a href="{% url 'admin:orders_order_change' order.pk %}">{{ order.order_number }}</a></td><td>{{ order.full_name }}</td><td>{{ order.phone }}</td><td>RWF {{ order.total }}</td><td><span class="status-chip {{ order.status }}">{{ order.get_status_display }}</span></td><td>{{ order.created_at|date:"M j, Y" }}</td><td><a class="table-view-link" href="{% url 'admin:orders_order_change' order.pk %}">View <i class="bi bi-arrow-right"></i></a></td></tr>{% endfor %}</tbody></table></div>{% else %}<p class="dashboard-empty">No orders yet.</p>{% endif %}</article>
+    <article class="dashboard-panel"><div class="panel-heading"><h2>Recent Messages</h2><a href="{% url 'admin:contact_contactmessage_changelist' %}">View all</a></div>{% if dashboard.recent_messages %}<ul class="messages-list">{% for message in dashboard.recent_messages %}<li><a href="{% url 'admin:contact_contactmessage_change' message.pk %}"><span class="message-avatar">{{ message.full_name|first|upper }}</span><span><strong>{{ message.full_name }}</strong><small>{{ message.subject }}</small></span><time>{{ message.created_at|date:"M j" }}</time></a></li>{% endfor %}</ul>{% else %}<p class="dashboard-empty">No contact messages yet.</p>{% endif %}</article>
+  </section>
+
+  <section class="dashboard-apps"><h2>Manage website data</h2>{% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}</section>
+</div>
+
+{{ dashboard.orders_by_status|json_script:"orders-status-data" }}
+{{ dashboard.orders_last_week|json_script:"orders-week-data" }}
+{{ dashboard.products_by_category|json_script:"products-category-data" }}
+<script>
+  if (window.Chart) {
+    const green = '#006B2E', dark = '#003B1F', pale = '#dcebd8';
+    const read = (id) => JSON.parse(document.getElementById(id).textContent);
+    const status = read('orders-status-data'), week = read('orders-week-data'), categories = read('products-category-data');
+    if (document.getElementById('ordersStatusChart')) new Chart(document.getElementById('ordersStatusChart'), {type:'doughnut', data:{labels:status.labels,datasets:[{data:status.data,backgroundColor:[green,'#4b9b65','#003B1F','#c8d8c4','#d6a44b'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}});
+    if (document.getElementById('ordersWeekChart')) new Chart(document.getElementById('ordersWeekChart'), {type:'line',data:{labels:week.labels,datasets:[{data:week.data,borderColor:green,backgroundColor:'rgba(0,107,46,.12)',fill:true,tension:.35,pointBackgroundColor:dark}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},scales:{y:{beginAtZero:true,ticks:{precision:0}},x:{grid:{display:false}}}}}});
+    if (document.getElementById('productsCategoryChart')) new Chart(document.getElementById('productsCategoryChart'), {type:'bar',data:{labels:categories.labels,datasets:[{data:categories.data,backgroundColor:green,borderRadius:6}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{precision:0}},y:{grid:{display:false}}}}});
+  }
+</script>
+{% endblock %}

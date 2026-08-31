@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Natural Sources | DICHO Ltd{% endblock %}
+{% block content %}
+<section class="natural-sources-hero">
+  <div class="container text-center">
+    <div class="section-kicker">Natural Sourcing</div>
+    <h1>From Natural Sources to ALVI Products</h1>
+    <p>Learn more about the natural inspirations connected to selected ALVI products.</p>
+  </div>
+</section>
+<section class="natural-sources-list section-pad">
+  <div class="container">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {% for slug, source in sources %}
+      <div class="col"><a class="sourcing-card-link" href="{% url 'natural_source_detail' slug %}"><article class="sourcing-card"><div class="sourcing-image"><img src="{% static source.image %}" onerror="this.onerror=null;this.src='{% static source.fallback_image %}'" alt="{{ source.image_alt }}"></div><div class="sourcing-content"><h2>{{ source.title }}</h2><p>{{ source.card_description }}</p><span class="view-link">View Farm <i class="bi bi-arrow-right"></i></span></div></article></a></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
